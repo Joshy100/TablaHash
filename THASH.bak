@@ -1,0 +1,130 @@
+#include <iostream.h>
+#include <conio.h>
+#include <string>
+#include <cstring>
+
+#define MAX 15
+
+struct Hash{
+	string info;
+   int llave;
+   int redirec;
+};
+
+Hash T[MAX];
+int x=1;
+int tam=0;
+int insertado=0;
+string dato;
+char *dato1;
+char *dato2;
+int pos=0;
+int posA=0;
+int posAA=0;
+int valor=0;
+
+
+void initTabla(){
+
+    for(int i=0; i<MAX; i++){
+    	T[i].info="";
+      T[i].llave= -1;
+      T[i].redirec= -1;
+    }
+}
+
+int Hash(string dato){
+	valor=0;
+   tam=0 ;
+   char *datos=strdup(dato.c_str());
+   tam= strlen(datos);
+   for(int i=0; i<tam;i++){
+      valor=valor+(int)(datos[i]);
+   }
+   return (valor%(MAX-1));
+}
+
+void ingresarHash(string dato){
+     pos=0;
+     posA=0;
+     pos = Hash(dato);
+    // posA=pos;
+
+
+     if(T[pos].llave== -1){
+        T[pos].info=dato;
+        T[pos].llave=pos;
+        return;
+     }
+
+     else {
+     		while(!insertado){
+              if(T[pos].llave==-1){
+                 T[pos].info=dato;
+                 T[pos].llave=pos;
+                 T[posA].redirec=pos;
+
+                 return;
+              }
+
+              if(pos==14){
+                   posA=pos;
+                   pos=0;
+              		while (!insertado){
+
+                     if(T[pos].llave==-1){
+                 			T[pos].info=dato;
+                 			T[pos].llave=pos;
+                        T[posA].redirec=pos;
+
+                        return;
+                    }else{
+                    T[posA].redirec=pos;
+                    posA=pos;
+                    pos++;
+                    //T[posA].redirec=pos;
+                    }
+              		}
+             }
+
+              posA=pos;
+              pos++;
+              T[posA].redirec=pos;
+
+         }
+
+
+     }
+
+
+}
+
+void mostrar(){
+
+	for(int i=0; i<MAX; i++){
+      cout<<"[ "<<T[i].llave<<" ]";
+      cout<<"[  "; cout<<T[i].info; cout<<"  ]";
+      cout<<"[ "<<T[i].redirec<<" ]";
+      cout<<endl;
+   }
+
+
+
+}
+
+
+
+void main(){
+  initTabla();
+  while(x!=4){
+  cout<<"--------------TABLA DE HASH----------------"<<endl;
+  cout<<"ingrese dato: "<<endl;
+  cin>>dato;
+  ingresarHash(dato);
+  cout<<endl<<endl;
+  mostrar();
+  }
+  getch();
+
+}
+
